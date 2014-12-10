@@ -1,5 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/Users/Rightpeter-MAC/Source/blog/.git/info'
 let g:netrw_dirhist_2='/Users/Rightpeter-MAC/Source/blog/.git'
 let g:netrw_dirhist_3='/Users/Rightpeter-MAC/Source/payment/done_controllers'
@@ -7,3 +7,4 @@ let g:netrw_dirhist_4='/Users/Rightpeter-MAC/Source/payment/done_operation'
 let g:netrw_dirhist_5='/Users/Rightpeter-MAC/Development/ganma/ganma_backend/controllers'
 let g:netrw_dirhist_6='/Users/Rightpeter-MAC/Development/ganma/ganma_backend'
 let g:netrw_dirhist_7='/Users/Rightpeter-MAC/Development/ganma/ganma_backend/operation'
+let g:netrw_dirhist_8='/Users/Rightpeter-MAC/Development/ganma/doc'
