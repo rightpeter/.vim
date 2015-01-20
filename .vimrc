@@ -22,7 +22,7 @@ set nu
 
 " 文件类型
 
-filetype on
+" filetype on
 
 filetype plugin indent on
 
@@ -211,3 +211,22 @@ execute pathogen#infect()
 "paste to system
 vmap "+y :w !pbcopy<CR><CR> 
 nmap "+p :r !pbpaste<CR><CR>
+
+"fold
+set foldmethod=indent
+
+" vundle
+set nocompatible      " be iMproved
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required!
+Bundle 'gmarik/vundle'
+
+" vim-scripts repos
+Bundle 'vim-plugin-foo'
+Bundle 'vim-plugin-bar'
+
+filetype plugin indent on   " required!
