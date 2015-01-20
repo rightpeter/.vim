@@ -226,7 +226,21 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " vim-scripts repos
-Bundle 'vim-plugin-foo'
-Bundle 'vim-plugin-bar'
+" ready!
+Bundle 'AutoClose'
+Bundle 'ShowTrailingWhitespace'
+Bundle 'The-NERD-tree'
+Bundle 'The-NERD-Commenter'
+Bundle 'ctrlp.vim'
+Bundle 'EasyMotion'
+Bundle 'matchit.zip'
+
+" todo:
+" Bundle 'snipMate'
+" Bundle 'vim-plugin-foo'
+" Bundle 'vim-plugin-bar'
 
 filetype plugin indent on   " required!
+
+" ZenCoding
+Plugin 'mattn/emmet-vim'
