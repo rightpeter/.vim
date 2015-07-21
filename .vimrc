@@ -209,7 +209,7 @@ let g:pydiction_location='~/.vim/after/ftplugin/pydiction/complete-dict'
 execute pathogen#infect()
 
 "paste to system
-vmap "+y :w !pbcopy<CR><CR> 
+vmap "+y :w !pbcopy<CR><CR>
 nmap "+p :r !pbpaste<CR><CR>
 
 "fold
