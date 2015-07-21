@@ -219,7 +219,7 @@ set foldmethod=indent
 set nocompatible      " be iMproved
 filetype off
 set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+call vundle#begin()
 
 " let Vundle manage Vundle
 " required!
