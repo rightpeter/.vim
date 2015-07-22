@@ -1,5 +1,8 @@
 set wildmenu
 
+" turn on nerd-tree
+NERDTree
+
 " 允许退格键删除
 set smartindent
 set smarttab
