@@ -1,7 +1,9 @@
 set wildmenu
 
 " turn on nerd-tree
-NERDTree
+autocmd VimEnter * NERDTree
+" move the cursor
+autocmd VimEnter * wincmd p
 
 " 允许退格键删除
 set smartindent
