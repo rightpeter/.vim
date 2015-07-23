@@ -249,3 +249,7 @@ filetype plugin indent on   " required!
 
 " ZenCoding
 Plugin 'mattn/emmet-vim'
+
+" Markdown with fenced code blocks highlighting
+au BufNewFile,BufReadPost *.md set filetype=markdown
+let g:markdown_fenced_languages = ['coffe', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
