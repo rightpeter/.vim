@@ -121,13 +121,13 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest
 
 " 函数合变量列表
-"map <F6>:TlistToggle<CR>
+" map <F6>:TlistToggle<CR>
 
-"文件浏览器
-"map <F7>:WMToggle<CR>
+" 文件浏览器
+" map <F7>:WMToggle<CR>
 
-"文件树装列表
-"map <F8>:NERDTree<CR>
+" 文件树装列表
+" map <F8>:NERDTree<CR>
 
 " 按 F9 智能补全
 inoremap <F9> <C-x><C-o>
@@ -203,17 +203,17 @@ endif
 
 set statusline+=%= " right align
 
-"set statusline+=%2*0x%-8B\ " current char
+" set statusline+=%2*0x%-8B\ " current char
 
 set statusline+=0x%-8B\ " current char
 
-set statusline+=%-14.(%l,%c%V%)\ %<%P " offset 
+set statusline+=%-14.(%l,%c%V%)\ %<%P " offset
 
 let g:pydiction_location='~/.vim/after/ftplugin/pydiction/complete-dict'
 
 execute pathogen#infect()
 
-"paste to system
+" paste to system
 vmap "+y :w !pbcopy<CR><CR>
 nmap "+p :r !pbpaste<CR><CR>
 
@@ -250,6 +250,16 @@ filetype plugin indent on   " required!
 " ZenCoding
 Plugin 'mattn/emmet-vim'
 
+" Vim-go
+Plugin 'fatih/vim-go'
+
+" YCM
+Plugin 'Valloric/YouCompleteMe'
+
+
 " Markdown with fenced code blocks highlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['coffe', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
+
+" Change current directory
+nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
