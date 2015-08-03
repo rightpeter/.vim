@@ -32,72 +32,68 @@ set nu
 filetype plugin indent on
 
 " 设置编码自动识别, 中文引号显示
+" set fileencodings=utf-8, euc-tw, cp936,big5,euc-jp,euc-kr,latin1,ucs-bom
+set fileencodings=utf-8
+set fileencoding=utf-8
+set encoding=utf-8
+set termencoding=utf-8
 
-"set fileencodings=utf-8,cp936,big5,euc-jp,euc-kr,latin1,ucs-bom
-
-set fileencodings=utf-8,gbk
-
-set ambiwidth=double
-
-
+" set ambiwidth=double
 
 " 移动长行
-
 nnoremap <Down> gj
-
 nnoremap <Up> gk
 
 
 
 " 高亮
-
 syntax on
 
 " 设置高亮搜索
-
 set hlsearch
 
 " 输入字符串就显示匹配点
-
 set incsearch
 
 " 输入的命令显示出来，看的清楚些。
-
 set showcmd
 
 " 指定不折行
-
 set nowrap
 
 " 水平滚动
-
 set guioptions+=b
 
 
 " <F2>code_complete.vim插件：函数自动完成
-if !exists("g:completekey")
-    let g:completekey = "<F2>" "hotkey
-endif
+"if !exists("g:completekey")
+"    let g:completekey = "<F2>" "hotkey
+"endif
 
-" 打开当前目录文件列表
+" 文件树装列表
+" map <F2> :NERDTree<CR>
+silent! nmap <C-p> :NERDTreeToggle<CR>
+silent! map <F2> :NERDTreeFind<CR>
 
-map <F3> :e .<CR>
+let g:NERDTreeMapActivateNode="<F2>"
+let g:NERDTreeMapPreview="<F3>"
 
-
+" Tagbar
+map <F4> :Tagbar<CR>
 
 " Taglist
 let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'
-let Tlist_File_Fold_Auto_Close=1
+" let Tlist_File_Fold_Auto_Close=1
 let Tlist_Show_One_File=1
 let Tlist_Exit_OnlyWindow=1
 
 set updatetime=1000
 
-map <F4> :Tlist<CR>
-
 " 当前目录生成tags语法文件，用于自动完成，函数提示： code_complete.vim OmniCppComplete.vim ...
-"map <F5> :!ctags -R --c-kinds=+p --fields=+S. <CR>
-map <F5>:!ctags -R --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q. <CR>
+" map <F5> :!ctags -R --c-kinds=+p --fields=+S. <CR>
+map <F6> :Tlist<CR>
+map <F7> :!ctags -R --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q <CR>
+
 set tags+=/usr/include/tags,
 set tags+=/usr/lib/tags,
 " set tags+=/usr/local/lib/tags,
@@ -119,15 +115,6 @@ highlight PmenuSel  guibg=lightgrey guifg=black
 " 自动关闭补全窗口
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest
-
-" 函数合变量列表
-" map <F6>:TlistToggle<CR>
-
-" 文件浏览器
-" map <F7>:WMToggle<CR>
-
-" 文件树装列表
-" map <F8>:NERDTree<CR>
 
 " 按 F9 智能补全
 inoremap <F9> <C-x><C-o>
@@ -155,15 +142,18 @@ set nocp
 
 " 2Html插件, 启用XHtml css
 let html_number_lines=1
-let html_use_css=1
+" let html_use_css=1
 let use_xhtml=1
 
 " fencview.vim 插件设置
-let g:fencview_autodetect = 1 "打开文件时自动识别编码
-let g:fencview_checklines = 10 "检查前后10行来判断编码
+" let g:fencview_autodetect = 1 "打开文件时自动识别编码
+let g:fencview_autodetect = 0 " 打开文件时不自动识别编码
+" let g:fencview_checklines = 10 "检查前后10行来判断编码
 
 " autocomplpop.vim & supertab.vim 插件设置
 let g:AutoComplPop_IgnoreCaseOption=1
+map <F9> :FencView<CR>
+
 set ignorecase
 
 " 其他设置
@@ -185,6 +175,11 @@ set statusline+=%h%1*%m%r%w%0* " flag
 
 set statusline+=[
 
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
 if v:version >= 600
 
 set statusline+=%{strlen(&ft)?&ft:'none'}, " filetype
@@ -195,34 +190,31 @@ endif
 
 set statusline+=%{&fileformat}] " file format
 
-if filereadable(expand("$VIM/vimfiles/plugin/vimbuddy.vim"))
-
-set statusline+=\ %{VimBuddy()} " vim buddy
-
-endif
+" if filereadable(expand("$VIM/vimfiles/plugin/vimbuddy.vim"))
+" 
+" set statusline+=\ %{VimBuddy()} " vim buddy
+" 
+" endif
 
 set statusline+=%= " right align
 
-" set statusline+=%2*0x%-8B\ " current char
+set statusline+=%2*0x%-8B\ " current char
 
-set statusline+=0x%-8B\ " current char
+" set statusline+=0x%-8B\ " current char
 
 set statusline+=%-14.(%l,%c%V%)\ %<%P " offset
 
 let g:pydiction_location='~/.vim/after/ftplugin/pydiction/complete-dict'
 
-execute pathogen#infect()
-
 " paste to system
 vmap "+y :w !pbcopy<CR><CR>
 nmap "+p :r !pbpaste<CR><CR>
 
-"fold
+" fold
 set foldmethod=indent
 
 " vundle
 set nocompatible      " be iMproved
-filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
 
@@ -239,13 +231,15 @@ Bundle 'The-NERD-Commenter'
 Bundle 'ctrlp.vim'
 Bundle 'EasyMotion'
 Bundle 'matchit.zip'
+Bundle 'fencview.vim'
 
 " todo:
 " Bundle 'snipMate'
 " Bundle 'vim-plugin-foo'
 " Bundle 'vim-plugin-bar'
 
-filetype plugin indent on   " required!
+" Git Vim
+Plugin 'vim-fugitive'
 
 " ZenCoding
 Plugin 'mattn/emmet-vim'
@@ -256,6 +250,20 @@ Plugin 'fatih/vim-go'
 " YCM
 Plugin 'Valloric/YouCompleteMe'
 
+" Go Env
+Plugin 'scrooloose/syntastic'
+" Plugin 'dgryski/vim-godef'
+Plugin 'Blackrush/vim-gocode'
+Plugin 'majutsushi/tagbar'
+Plugin 'bling/vim-airline'
+
+call vundle#end()
+
+" GoDef
+au FileType go nnoremap <leader>v :vsp <CR>:exe "GoDef"<CR>
+au FileType go nnoremap <leader>s :sp <CR>:exe "GoDef"<CR>
+au FileType go nnoremap <leader>t :tab split <CR>:exe "GoDef"<CR>
+au FileType go nnoremap <leader>r :GoRun %<CR>
 
 " Markdown with fenced code blocks highlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
@@ -263,3 +271,17 @@ let g:markdown_fenced_languages = ['coffe', 'css', 'erb=eruby', 'javascript', 'j
 
 " Change current directory
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
+
+" resize current buffer by +/- 5
+" nnoremap <C-left> :5winc <<CR>
+" nnoremap <C-right> :5winc ><CR>
+" nnoremap <C-up> :5winc +<CR>
+" nnoremap <C-down> :5winc -<CR>
+
+" Syntastic syntax
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_flake8_post_args='--ignore=E501'
