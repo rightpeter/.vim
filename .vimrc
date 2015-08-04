@@ -239,7 +239,7 @@ Bundle 'fencview.vim'
 " Bundle 'vim-plugin-bar'
 
 " Git Vim
-Plugin 'vim-fugitive'
+Plugin 'tpope/vim-fugitive'
 
 " ZenCoding
 Plugin 'mattn/emmet-vim'
