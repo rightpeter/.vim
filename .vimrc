@@ -29,6 +29,7 @@ set nu
 
 " filetype on
 
+filetype plugin on
 filetype plugin indent on
 
 " 设置编码自动识别, 中文引号显示
@@ -145,6 +146,11 @@ let html_number_lines=1
 " let html_use_css=1
 let use_xhtml=1
 
+" html format
+let g:html_indent_script1 = "inc"
+let g:html_indent_style1 = "inc"
+let g:html_indent_inctags = "html,body,head"
+
 " fencview.vim 插件设置
 " let g:fencview_autodetect = 1 "打开文件时自动识别编码
 let g:fencview_autodetect = 0 " 打开文件时不自动识别编码
@@ -216,6 +222,7 @@ set foldmethod=indent
 " vundle
 set nocompatible      " be iMproved
 set rtp+=~/.vim/bundle/vundle/
+
 call vundle#begin()
 
 " let Vundle manage Vundle
@@ -260,6 +267,8 @@ Plugin 'tpope/vim-unimpaired'
 
 call vundle#end()
 
+map <D-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <D-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " GoDef
 au FileType go nnoremap <leader>v :vsp <CR>:exe "GoDef"<CR>
 au FileType go nnoremap <leader>s :sp <CR>:exe "GoDef"<CR>

@@ -4,3 +4,48 @@
 [submodule "bundle/vundle"]
 	path = bundle/vundle
 	url = https://github.com/gmarik/Vundle.vim.git
+[submodule "bundle/vim-colors-solarized"]
+	path = bundle/vim-colors-solarized
+	url = git://github.com/altercation/vim-colors-solarized.git
+[submodule "bundle/AutoClose"]
+	path = bundle/AutoClose
+	url = https://github.com/vim-scripts/AutoClose.git
+[submodule "bundle/EasyMotion"]
+	path = bundle/EasyMotion
+	url = https://github.com/vim-scripts/EasyMotion.git
+[submodule "bundle/ShowTrailingWhitespace"]
+	path = bundle/ShowTrailingWhitespace
+	url = https://github.com/vim-scripts/ShowTrailingWhitespace.git
+[submodule "bundle/The-NERD-Commenter"]
+	path = bundle/The-NERD-Commenter
+	url = https://github.com/vim-scripts/The-NERD-Commenter.git
+[submodule "bundle/The-NERD-tree"]
+	path = bundle/The-NERD-tree
+	url = https://github.com/vim-scripts/The-NERD-tree.git
+[submodule "bundle/emmet-vim"]
+	path = bundle/emmet-vim
+	url = https://github.com/mattn/emmet-vim.git
+[submodule "bundle/fencview.vim"]
+	path = bundle/fencview.vim
+	url = https://github.com/vim-scripts/fencview.vim.git
+[submodule "bundle/matchit.zip"]
+	path = bundle/matchit.zip
+	url = https://github.com/vim-scripts/matchit.zip.git
+[submodule "bundle/syntastic"]
+	path = bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "bundle/tagbar"]
+	path = bundle/tagbar
+	url = https://github.com/majutsushi/tagbar.git
+[submodule "bundle/vim-airline"]
+	path = bundle/vim-airline
+	url = https://github.com/bling/vim-airline.git
+[submodule "bundle/vim-go"]
+	path = bundle/vim-go
+	url = https://github.com/fatih/vim-go.git
+[submodule "bundle/vim-gocode"]
+	path = bundle/vim-gocode
+	url = https://github.com/Blackrush/vim-gocode.git
+[submodule "bundle/vim-unimpaired"]
+	path = bundle/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired.git
