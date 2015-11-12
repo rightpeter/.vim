@@ -1,10 +1,5 @@
 set wildmenu
 
-" turn on nerd-tree
-" autocmd VimEnter * NERDTree
-" move the cursor
-" autocmd VimEnter * wincmd p
-
 " 允许退格键删除
 set smartindent
 set smarttab
@@ -13,10 +8,8 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set backspace=2
-set textwidth=79
 
 " 启用鼠标
-
 if has('mouse')
     set mouse=a
 endif
@@ -25,12 +18,11 @@ behave mswin
 
 set nu
 
-" 文件类型
+" 允许在有未保存的修改时切换缓冲区，此时由vim负责保存
+set hidden
 
-" filetype on
-
-filetype plugin on
-filetype plugin indent on
+" copy to system clipboard
+set clipboard=unnamed
 
 " 设置编码自动识别, 中文引号显示
 " set fileencodings=utf-8, euc-tw, cp936,big5,euc-jp,euc-kr,latin1,ucs-bom
@@ -45,10 +37,6 @@ set termencoding=utf-8
 nnoremap <Down> gj
 nnoremap <Up> gk
 
-
-
-" 高亮
-syntax on
 
 " 设置高亮搜索
 set hlsearch
@@ -78,6 +66,7 @@ silent! map <F2> :NERDTreeFind<CR>
 
 let g:NERDTreeMapActivateNode="<F2>"
 let g:NERDTreeMapPreview="<F3>"
+
 
 " Tagbar
 map <F4> :Tagbar<CR>
@@ -118,17 +107,17 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest
 
 " 按 F9 智能补全
-inoremap <F9> <C-x><C-o>
+" inoremap <F9> <C-x><C-o>
 
 " vim 自动补全 Python 代码
 
 " 来自http://vim.sourceforge.net/scripts/script.php?script_id=850
-
-autocmd FileType python set complete+=k~/.vim/tools/pydiction
+" autocmd FileType python set complete+=k~/.vim/tools/pydiction
+" let g:pydiction_location='~/.vim/after/ftplugin/pydiction/complete-dict'
 
 " 自动使用新文件模板
-
-"autocmd BufNewFile *.py 0r ~/.vim/template/simple.py
+" TODO
+" autocmd BufNewFile *.py 0r ~/.vim/template/simple.py
 
 " 映射全选
 map <C-A> ggVG
@@ -162,55 +151,8 @@ map <F9> :FencView<CR>
 
 set ignorecase
 
-" 其他设置
-
-
-"Format the statusline
-
 "Nice statusbar
-
 set laststatus=2
-
-set statusline=
-
-set statusline+=%2*%-3.3n%0*\ " buffer number
-
-set statusline+=%f\ " file name
-
-set statusline+=%h%1*%m%r%w%0* " flag
-
-set statusline+=[
-
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-if v:version >= 600
-
-set statusline+=%{strlen(&ft)?&ft:'none'}, " filetype
-
-set statusline+=%{&encoding}, " encoding
-
-endif
-
-set statusline+=%{&fileformat}] " file format
-
-" if filereadable(expand("$VIM/vimfiles/plugin/vimbuddy.vim"))
-" 
-" set statusline+=\ %{VimBuddy()} " vim buddy
-" 
-" endif
-
-set statusline+=%= " right align
-
-set statusline+=%2*0x%-8B\ " current char
-
-" set statusline+=0x%-8B\ " current char
-
-set statusline+=%-14.(%l,%c%V%)\ %<%P " offset
-
-let g:pydiction_location='~/.vim/after/ftplugin/pydiction/complete-dict'
 
 " paste to system
 vmap "+y :w !pbcopy<CR><CR>
@@ -219,6 +161,7 @@ nmap "+p :r !pbpaste<CR><CR>
 " fold
 set foldmethod=indent
 
+filetype off
 " vundle
 set nocompatible      " be iMproved
 set rtp+=~/.vim/bundle/vundle/
@@ -230,7 +173,6 @@ call vundle#begin()
 Bundle 'gmarik/vundle'
 
 " vim-scripts repos
-" ready!
 Bundle 'AutoClose'
 Bundle 'ShowTrailingWhitespace'
 Bundle 'The-NERD-tree'
@@ -240,43 +182,67 @@ Bundle 'EasyMotion'
 Bundle 'matchit.zip'
 Bundle 'fencview.vim'
 
-" todo:
-" Bundle 'snipMate'
-" Bundle 'vim-plugin-foo'
-" Bundle 'vim-plugin-bar'
+Bundle 'scrooloose/syntastic'
+" Plugin 'dgryski/vim-godef'
+Bundle 'majutsushi/tagbar'
+Bundle 'bling/vim-airline'
+Bundle 'tpope/vim-unimpaired'
 
 " Git Vim
-Plugin 'tpope/vim-fugitive'
+Bundle 'tpope/vim-fugitive'
 
 " ZenCoding
-Plugin 'mattn/emmet-vim'
+Bundle 'mattn/emmet-vim'
 
 " Vim-go
-Plugin 'fatih/vim-go'
+Bundle 'fatih/vim-go'
+Bundle 'Blackrush/vim-gocode'
+
+Bundle 'ervandew/supertab'
 
 " YCM
-Plugin 'Valloric/YouCompleteMe'
+Bundle 'Valloric/YouCompleteMe'
 
-" Go Env
-Plugin 'scrooloose/syntastic'
-" Plugin 'dgryski/vim-godef'
-Plugin 'Blackrush/vim-gocode'
-Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'
-Plugin 'tpope/vim-unimpaired'
+" ruby
+Bundle 'vim-ruby/vim-ruby'
+" rails
+Bundle 'tpope/vim-rails.git'
+Bundle 'tpope/vim-bundler.git'
+
+Bundle 'altercation/vim-colors-solarized.git'
+Bundle 'SirVer/ultisnips'
+Bundle 'honza/vim-snippets'
+
+Bundle 'vim-scripts/TaskList.vim'
 
 call vundle#end()
 
+" 高亮
+syntax on
+
+filetype plugin on
+filetype plugin indent on
+
+" Shortcut for buffer contrl
+nnoremap <leader>w :bd<CR>
+if (has('unix'))
+    " nnoremap <D-]> :bp<CR>
+    " nnoremap <D-[> :bn<CR>
+    nnoremap <leader>q :bp<CR>
+    nnoremap <leader>e :bn<CR>
+else
+    nnoremap <leader>[ :bp<CR>
+    nnoremap <leader>] :bn<CR>
+endif
+
+" tasklist.vim
+let g:tlWindowPosition = 1 " task list window position
+let g:tlTokenList = ['FIXME', 'TODO', 'NOTE', 'WORN', 'MODIFY']
+nnoremap ,td :TaskList<CR>
+
 map <D-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 map <D-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-" GoDef
-au FileType go nnoremap <leader>v :vsp <CR>:exe "GoDef"<CR>
-au FileType go nnoremap <leader>s :sp <CR>:exe "GoDef"<CR>
-au FileType go nnoremap <leader>t :tab split <CR>:exe "GoDef"<CR>
-au FileType go nnoremap <leader>r :GoRun %<CR>
 
-" Markdown with fenced code blocks highlighting
-au BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages = ['coffe', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
 
 " Change current directory
@@ -288,11 +254,63 @@ nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 " nnoremap <C-up> :5winc +<CR>
 " nnoremap <C-down> :5winc -<CR>
 
+" airline
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_set = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#buffer_nr_show = 1
+
 " Syntastic syntax
+let g:syntastic_mode_map = {'mode': 'passive'}
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers=['flake8']
 let g:syntastic_python_flake8_post_args='--ignore=E501'
-nnoremap <C-\> :SyntasticToggleMode<CR>
+let g:syntastic_ruby_checkers=['rubocop']
+" let g:syntastic_ruby_mri_exec = '~/.rvm/rubies/ruby-2.2.3/bin/ruby'
+nnoremap <C-\> :SyntasticCheck<CR>
+" nnoremap <C-\> :SyntasticToggleMode<CR>
+
+" YouCompleteMe
+let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-j>'
+
+" ultisnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsEditSplit="vertical"
+" let g:UltiSnipsUsePythonVersion=2
+" let g:UltiSnipsSnippetDirectories=['UltiSnips']
+" let g:UltiSnipsSnippetDir=['~/.vim/bundle/vim-snippets/UltiSnips']
+"
+augroup vimrc_autocmds
+
+" Markdown with fenced code blocks highlighting
+au BufNewFile,BufReadPost *.md set filetype=markdown
+
+" GoDef
+au FileType go nnoremap <leader>v :vsp <CR>:exe "GoDef"<CR>
+au FileType go nnoremap <leader>s :sp <CR>:exe "GoDef"<CR>
+au FileType go nnoremap <leader>t :tab split<CR>:exe "GoDef"<CR>
+au FileType go nnoremap <leader>r :GoRun %<CR>
+
+" Python
+au FileType python highlight Excess ctermbg=DarkGrey guibg=Black
+au FileType python match Excess /\%150v.*/
+au FileType python set nowrap
+au FileType python nnoremap <leader>r :!python %<CR>
+
+" Ruby
+au FileType ruby setlocal ts=2 sw=2 expandtab
+" au FileType ruby nnoremap <leader>r :exec '!ruby' shellescape(@%, 1)<CR>
+au FileType ruby nnoremap <leader>r :!ruby %<CR>
+
+" html
+au FileType html setlocal ts=2 sw=2 expandtab
+
+augroup END

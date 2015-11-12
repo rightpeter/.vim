@@ -1,0 +1,13 @@
+snippet dt
+desc "${1:description}"
+task :${2:name} do
+	$0
+end
+endsnippet
+
+snippet dt=
+desc "${1:description}"
+task :${2:name} => :${3:depends} do
+	$0
+end
+endsnippet
