@@ -53,6 +53,11 @@ set nowrap
 " 水平滚动
 set guioptions+=b
 
+" Window Movement
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+map <c-h> <c-w>h
 
 " <F2>code_complete.vim插件：函数自动完成
 "if !exists("g:completekey")
@@ -160,6 +165,7 @@ nmap "+p :r !pbpaste<CR><CR>
 
 " fold
 set foldmethod=indent
+set foldlevel=99
 
 filetype off
 " vundle
@@ -170,50 +176,58 @@ call vundle#begin()
 
 " let Vundle manage Vundle
 " required!
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
 " vim-scripts repos
-Bundle 'AutoClose'
-Bundle 'ShowTrailingWhitespace'
-Bundle 'The-NERD-tree'
-Bundle 'The-NERD-Commenter'
-Bundle 'ctrlp.vim'
-Bundle 'EasyMotion'
-Bundle 'matchit.zip'
-Bundle 'fencview.vim'
+Plugin 'AutoClose'
+Plugin 'ShowTrailingWhitespace'
+Plugin 'The-NERD-tree'
+Plugin 'The-NERD-Commenter'
+Plugin 'ctrlp.vim'
+Plugin 'EasyMotion'
+Plugin 'matchit.zip'
+Plugin 'fencview.vim'
 
-Bundle 'scrooloose/syntastic'
-" Plugin 'dgryski/vim-godef'
-Bundle 'majutsushi/tagbar'
-Bundle 'bling/vim-airline'
-Bundle 'tpope/vim-unimpaired'
+Plugin 'scrooloose/syntastic'
+Plugin 'majutsushi/tagbar'
+Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-unimpaired'
 
 " Git Vim
-Bundle 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
 
 " ZenCoding
-Bundle 'mattn/emmet-vim'
+Plugin 'mattn/emmet-vim'
 
 " Vim-go
-Bundle 'fatih/vim-go'
-Bundle 'Blackrush/vim-gocode'
+Plugin 'fatih/vim-go'
+Plugin 'Blackrush/vim-gocode'
 
-Bundle 'ervandew/supertab'
+Plugin 'ervandew/supertab'
 
 " YCM
-Bundle 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 
 " ruby
-Bundle 'vim-ruby/vim-ruby'
+Plugin 'vim-ruby/vim-ruby'
+
 " rails
-Bundle 'tpope/vim-rails.git'
-Bundle 'tpope/vim-bundler.git'
+Plugin 'tpope/vim-rails.git'
 
-Bundle 'altercation/vim-colors-solarized.git'
-Bundle 'SirVer/ultisnips'
-Bundle 'honza/vim-snippets'
+Plugin 'altercation/vim-colors-solarized.git'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
-Bundle 'vim-scripts/TaskList.vim'
+Plugin 'vim-scripts/TaskList.vim'
+
+" Vundle on MAC
+Plugin 'rizzatti/dash.vim'
+
+" Gundo
+Plugin 'sjl/gundo.vim'
+
+" jedi-vim
+Plugin 'davidhalter/jedi-vim'
 
 call vundle#end()
 
@@ -263,10 +277,11 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 
 " Syntastic syntax
 let g:syntastic_mode_map = {'mode': 'passive'}
+" let g:syntastic_debug = 1
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 1
 let g:syntastic_python_checkers=['flake8']
 let g:syntastic_python_flake8_post_args='--ignore=E501'
 let g:syntastic_ruby_checkers=['rubocop']
@@ -290,6 +305,9 @@ let g:UltiSnipsEditSplit="vertical"
 "
 augroup vimrc_autocmds
 
+" Gundo
+map <leader>h :GundoToggle<CR>
+
 " Markdown with fenced code blocks highlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
 
@@ -303,6 +321,10 @@ au FileType go nnoremap <leader>r :GoRun %<CR>
 au FileType python highlight Excess ctermbg=DarkGrey guibg=Black
 au FileType python match Excess /\%150v.*/
 au FileType python set nowrap
+au FileType python nnoremap gd :YcmCompleter GoToDefinition<CR>
+au FileType python nnoremap <leader>v :vsp <CR>:YcmCompleter GoToDefinition<CR>
+au FileType python nnoremap <leader>s :sp <CR>:YcmCompleter GoToDefinition<CR>
+au FileType python nnoremap <leader>t :tab split<CR>:YcmCompleter GoToDefinition<CR>
 au FileType python nnoremap <leader>r :!python %<CR>
 
 " Ruby
@@ -314,3 +336,15 @@ au FileType ruby nnoremap <leader>r :!ruby %<CR>
 au FileType html setlocal ts=2 sw=2 expandtab
 
 augroup END
+
+" Add the virtualenv's site-packages to vim path
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
