@@ -1,3 +1,8 @@
+" File: init.vim
+" Author: rightpeter
+" Description: neovim config
+" Last Modified: June 27, 2018
+
 set wildmenu
 set ignorecase
 
@@ -23,37 +28,24 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" NERDTree
-" map <F2> :NERDTree<CR>
-silent! nmap <F2> :NERDTreeToggle<CR>
+" map NERDTreeToggle
+"silent! nmap <leader>f :NERDTreeToggle<CR>
+nnoremap <M-f> :NERDTreeToggle<CR>
 
-" Tagbar
-" map <F4> :Tagbar<CR>
-
-" Leader key
+" Map Leader key
 let mapleader=";"
-
-set updatetime=1000
-
-highlight Pmenu     guibg=darkgrey  guifg=black
-highlight PmenuSel  guibg=lightgrey guifg=black
 
 " 映射全选
 map <C-A> ggVG
 map! <C-A> <Esc>ggVG
 
-" fencview.vim
-" let g:fencview_autodetect = 1 "打开文件时自动识别编码
-" let g:fencview_checklines = 10 "检查前后10行来判断编码
-" map <F9> :FencView<CR>
-
-" SimplyFold
-nnoremap <space> za
-let g:SimpylFold_docstring_preview = 1
-
 " Remap pop menu keys
 inoremap <expr> <C-J> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <C-K> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Virtuanenv support for neovim
+let g:python_host_prog = '/usr/local/bin/python2'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 " Vim-plug
 " Specify a directory for plugins
@@ -65,7 +57,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'easymotion/vim-easymotion'
 " Plug 'fholgado/minibufexpl.vim'
-" Plug 'mbbill/fencview'
 
 " Fuzzy finder
 Plug 'kien/ctrlp.vim'
@@ -97,7 +88,6 @@ Plug 'davidhalter/jedi'
 
 "  Snippets
 Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
 
 " Git
@@ -112,13 +102,6 @@ call plug#end()
 " Vim-go
 " Plugin 'fatih/vim-go'
 " Plugin 'Blackrush/vim-gocode'
-
-" ruby
-" Plugin 'vim-ruby/vim-ruby'
-
-" rails
-" Plugin 'tpope/vim-rails.git'
-
 
 " vim-react-snippets
 " Plugin 'justinj/vim-react-snippets'
@@ -143,8 +126,6 @@ nnoremap <M-t> :enew<CR>
 nnoremap <M-[> :bp<CR>
 nnoremap <M-]> :bn<CR>
 
-let g:markdown_fenced_languages = ['coffe', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
-
 " Change current directory
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 
@@ -154,12 +135,12 @@ nnoremap <M-right> :5winc ><CR>
 nnoremap <M-up> :5winc +<CR>
 nnoremap <M-down> :5winc -<CR>
 
-" airline
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_set = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#buffer_nr_show = 1
+" SimplyFold
+nnoremap <space> za
+let g:SimpylFold_docstring_preview = 1
+
+" undootree
+map <M-u> :MundoToggle<CR>
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -169,19 +150,15 @@ let g:deoplete#enable_at_startup = 1
 let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
 \ }
-let g:neosnippet#enable_snipmate_compatibility = 1
 " Tell Neosnippet about the other snippets
 let g:neosnippet#snippets_directory='$XDG_DATA_HOME/nvim/plugged/vim-snippets/snippets'
 
 " Neosnippet Plugin key-mappings.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+imap <expr><TAB>  neosnippet#expandable_or_jumpable() ?
+\ "<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-" For conceal markers.
-if has('conceal')
-  set conceallevel=2 concealcursor=niv
-endif
 
 " ALE Settings
 let g:ale_linters = {
@@ -202,46 +179,27 @@ nnoremap fr :ALEFindReferences<CR>
 nnoremap hv :ALEHover<CR>
 let g:ale_set_balloons = 1
 
-
-
-" ultisnips
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-" let g:UltiSnipsEditSplit="vertical"
-" let g:UltiSnipsUsePythonVersion=2
-" let g:UltiSnipsSnippetDirectories=['UltiSnips']
-" let g:UltiSnipsSnippetDir=['~/.vim/bundle/vim-snippets/UltiSnips']
-
 " Markdown
+" let g:markdown_fenced_languages = ['coffe', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
 " let vim_markdown_preview_github=1
-
-augroup vimrc_autocmds
-
-" undootree
-map <M-h> :MundoToggle<CR>
 
 " auto-pairs
 let g:AutoPairsFlyMode = 1
 
-" GoDef
+" Golang
 au FileType go nnoremap <leader>r :GoRun %<CR>
 
 " Python
-au FileType python highlight Excess ctermbg=DarkGrey guibg=Black
-au FileType python set nowrap
 au FileType python nnoremap <leader>r :!python %<CR>
-" Virtuanenv support for neovim
-let g:python_host_prog = '/usr/local/bin/python2'
-let g:python3_host_prog = '/usr/local/bin/python3'
 
 " javascript
-au FileType javascript setlocal ts=2 sts=2 sw=2
+" au FileType javascript setlocal ts=2 sts=2 sw=2
 
 " html
-au FileType html setlocal ts=2 sw=2 expandtab
+" au FileType html setlocal ts=2 sw=2 expandtab
 
-" NERDTree
+augroup NERDTree_autocmds
+
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
