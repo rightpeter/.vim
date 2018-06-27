@@ -61,9 +61,6 @@ inoremap <expr> <C-K> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
-" Plug Manager
-Plug 'junegunn/vim-plug'
-
 Plug 'jiangmiao/auto-pairs'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'easymotion/vim-easymotion'
@@ -89,8 +86,19 @@ Plug 'tmhedberg/SimpylFold'
 " Plug 'airblade/vim-gitgutter'
 " Plug 'vim-signature'
 
-" Synx Check
+" Asynchronous Lint Engine
 Plug 'w0rp/ale'
+
+" Completion
+Plug 'Shougo/deoplete.nvim'
+" Python
+Plug 'zchee/deoplete-jedi'
+Plug 'davidhalter/jedi'
+
+"  Snippets
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'honza/vim-snippets'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -100,9 +108,6 @@ Plug 'simnalamburt/vim-mundo'
 
 " Initialize plugin system
 call plug#end()
-
-
-" Plugin 'majutsushi/tagbar'
 
 " Vim-go
 " Plugin 'fatih/vim-go'
@@ -114,9 +119,6 @@ call plug#end()
 " rails
 " Plugin 'tpope/vim-rails.git'
 
-"  Snippets
-" Plugin 'SirVer/ultisnips'
-" Plugin 'honza/vim-snippets'
 
 " vim-react-snippets
 " Plugin 'justinj/vim-react-snippets'
@@ -162,6 +164,25 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 " Deoplete
 let g:deoplete#enable_at_startup = 1
 
+" Neosnippet
+" Enable snipMate compatibility feature.
+let g:neosnippet#disable_runtime_snippets = {
+\   '_' : 1,
+\ }
+let g:neosnippet#enable_snipmate_compatibility = 1
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='$XDG_DATA_HOME/nvim/plugged/vim-snippets/snippets'
+
+" Neosnippet Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
+
 " ALE Settings
 let g:ale_linters = {
 \   'python': ['pyls'],
@@ -170,7 +191,7 @@ let g:ale_fixers = {
 \   'python': ['yapf'],
 \}
 let g:ale_fix_on_save = 1
-let g:ale_completion_enabled = 1
+"let g:ale_completion_enabled = 1
 " ALEGoToDefinition
 nnoremap gd :ALEGoToDefinition<CR>
 nnoremap <leader>v :vsp <CR>:ALEGoToDefinition<CR>
