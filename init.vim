@@ -8,29 +8,16 @@ set ignorecase
 
 set nu
 
-" 允许在有未保存的修改时切换缓冲区，此时由vim负责保存
-set hidden
+set hidden " 允许在有未保存的修改时切换缓冲区，此时由vim负责保存
 
-" copy to system clipboard
-set clipboard=unnamed
+set clipboard=unnamed " copy to system clipboard
+
+set nowrap " 指定不折行
 
 " Color theme
 set termguicolors
-colorscheme NeoSolarized
 set background=dark
-
-" 指定不折行
-set nowrap
-
-" Window Movement
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-" map NERDTreeToggle
-"silent! nmap <leader>f :NERDTreeToggle<CR>
-nnoremap <M-f> :NERDTreeToggle<CR>
+colorscheme solarized8
 
 " Map Leader key
 let mapleader=";"
@@ -47,6 +34,17 @@ inoremap <expr> <C-K> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
 
+" vim-markdown-composer build-composer
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    if has('nvim')
+      !cargo build --release
+    else
+      !cargo build --release --no-default-features --features json-rpc
+    endif
+  endif
+endfunction
+
 " Vim-plug
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
@@ -56,6 +54,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'jiangmiao/auto-pairs'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'easymotion/vim-easymotion'
+Plug 'Yggdroot/indentLine'
+Plug 'terryma/vim-multiple-cursors'
 " Plug 'fholgado/minibufexpl.vim'
 
 " Fuzzy finder
@@ -68,8 +68,8 @@ Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 
 " UI
-Plug 'icymind/NeoSolarized'
 Plug 'vim-airline/vim-airline'
+Plug 'lifepillar/vim-solarized8'
 
 " Smart Fold
 Plug 'tmhedberg/SimpylFold'
@@ -81,14 +81,29 @@ Plug 'tmhedberg/SimpylFold'
 Plug 'w0rp/ale'
 
 " Completion
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
 " Python
 Plug 'zchee/deoplete-jedi'
 Plug 'davidhalter/jedi'
 
+" Golang
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '$XDG_CONFIG_HOME/nvim/plugged/gocode/nvim/symlink.sh' }
+Plug 'zchee/deoplete-go', { 'do': 'make'}
+
+" frontend
+" Plugin 'pangloss/vim-javascript'
+" Plugin 'mxw/vim-jsx'
+" Plugin 'ternjs/tern_for_vim'
+
+Plug 'wokalski/autocomplete-flow' 		" javascript
+Plug 'mattn/emmet-vim'				" html
+
 "  Snippets
 Plug 'Shougo/neosnippet.vim'
-Plug 'honza/vim-snippets'
+" Plug 'honza/vim-snippets'
+Plug 'https://github.com/rightpeter/vim-snippets'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -96,48 +111,59 @@ Plug 'tpope/vim-fugitive'
 " Undo Tree
 Plug 'simnalamburt/vim-mundo'
 
-" Initialize plugin system
-call plug#end()
-
-" Vim-go
-" Plugin 'fatih/vim-go'
-" Plugin 'Blackrush/vim-gocode'
-
-" vim-react-snippets
-" Plugin 'justinj/vim-react-snippets'
-
-
-" frontend
-" Plugin 'mattn/emmet-vim'
-" Plugin 'pangloss/vim-javascript'
-" Plugin 'mxw/vim-jsx'
-" Plugin 'ternjs/tern_for_vim'
-
 " Markdown
 " Plugin 'JamshedVesuna/vim-markdown-preview'
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+
+" Initialize plugin system
+call plug#end()
 
 " Gist
 " Plugin 'mattn/webapi-vim'
 " Plugin 'mattn/gist-vim'
 
-" Shortcut for buffer contrl
-nnoremap <M-w> :bd<CR>
-nnoremap <M-t> :enew<CR>
-nnoremap <M-[> :bp<CR>
-nnoremap <M-]> :bn<CR>
 
-" Change current directory
-nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
+nnoremap <M-w> :bd<CR>			" Close buffer
+nnoremap <M-t> :enew<CR>		" create a new empty buffer
+nnoremap <M-[> :bp<CR>			" Open previous buffer
+nnoremap <M-]> :bn<CR>			" Open next buffer
 
-" resize current buffer by +/- 5
-nnoremap <M-left> :5winc <<CR>
-nnoremap <M-right> :5winc ><CR>
-nnoremap <M-up> :5winc +<CR>
-nnoremap <M-down> :5winc -<CR>
+nnoremap ,cd :cd %:p:h<CR>:pwd<CR> 	" Change current directory
+
+nnoremap <C-J> <C-W><C-J>		" Focus the buffer below
+nnoremap <C-K> <C-W><C-K>		" Focus the buffer above
+nnoremap <C-L> <C-W><C-L>		" Focus the right buffer
+nnoremap <C-H> <C-W><C-H>		" Focus the left buffer
+
+" resize current buffer by +/- 5=
+nnoremap <M-left> :2winc <<CR>		" Reduce buffer width
+nnoremap <M-right> :2winc ><CR>		" Increase buffer width
+nnoremap <M-up> :2winc +<CR>		" Increase buffer height
+nnoremap <M-down> :2winc -<CR>		" Reduce buffer height
+
+nnoremap <M-f> :NERDTreeToggle<CR> 	" map NERDTreeToggle
+
+" vim-multiple-cursors keys remap
+let g:multi_cursor_start_word_key      = '<C-j>'
+let g:multi_cursor_next_key            = '<C-j>'
+let g:multi_cursor_prev_key            = '<C-k>'
+let g:multi_cursor_exit_from_insert_mode = 0
+
+" Disable deoplete when in multi cursor mode
+function! Multiple_cursors_before()
+    let b:deoplete_disable_auto_complete = 1
+endfunction
+
+function! Multiple_cursors_after()
+    let b:deoplete_disable_auto_complete = 0
+endfunction
 
 " SimplyFold
 nnoremap <space> za
 let g:SimpylFold_docstring_preview = 1
+
+" indentLine
+let g:indentLine_char = '|'
 
 " undootree
 map <M-u> :MundoToggle<CR>
@@ -150,8 +176,7 @@ let g:deoplete#enable_at_startup = 1
 let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
 \ }
-" Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='$XDG_DATA_HOME/nvim/plugged/vim-snippets/snippets'
+let g:neosnippet#snippets_directory='$XDG_DATA_HOME/nvim/plugged/vim-snippets/snippets' 	" Tell Neosnippet about the other snippets
 
 " Neosnippet Plugin key-mappings.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
@@ -161,23 +186,31 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " ALE Settings
+let g:ale_sign_error = '⤫' 	" Error signs.
+let g:ale_sign_warning = '⚠'	" Warning signs.
+
+" Set linters
 let g:ale_linters = {
 \   'python': ['pyls'],
+\   'go': ['gofmt', 'golint', 'go vet', 'gosimple']
 \}
+
+" Set fixers
 let g:ale_fixers = {
 \   'python': ['yapf'],
+\   'go': ['gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint', 'prettier'],
 \}
-let g:ale_fix_on_save = 1
+
 "let g:ale_completion_enabled = 1
-" ALEGoToDefinition
+nmap <leader>d <Plug>(ale_fix)
 nnoremap gd :ALEGoToDefinition<CR>
-nnoremap <leader>v :vsp <CR>:ALEGoToDefinition<CR>
+nnoremap <leader>v :vs <CR>:ALEGoToDefinition<CR>
 nnoremap <leader>s :sp <CR>ALEGoToDefinitionCR<CR>
-" ALEFindReferences
-nnoremap fr :ALEFindReferences<CR>
-" ALEHover
-nnoremap hv :ALEHover<CR>
-let g:ale_set_balloons = 1
+nnoremap <M-r> :ALEFindReferences<CR>
+nnoremap <M-h> :ALEHover<CR>
+nmap <silent> <leader>k <Plug>(ale_previous_wrap)
+nmap <silent> <leader>j <Plug>(ale_next_wrap)
 
 " Markdown
 " let g:markdown_fenced_languages = ['coffe', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
@@ -187,7 +220,13 @@ let g:ale_set_balloons = 1
 let g:AutoPairsFlyMode = 1
 
 " Golang
+au FileType go nnoremap gd :exe "GoDef"<CR>
+au FileType go nnoremap <leader>v :vsp <CR>:exe "GoDef"<CR>
+au FileType go nnoremap <leader>s :sp <CR>:exe "GoDef"<CR>
+au FileType go nnoremap <leader>t :tab split<CR>:exe "GoDef"<CR>
 au FileType go nnoremap <leader>r :GoRun %<CR>
+au FileType go set list lcs=tab:\|\ 		" indentLine only support indentation using space, while gofmt using tab
+
 
 " Python
 au FileType python nnoremap <leader>r :!python %<CR>
