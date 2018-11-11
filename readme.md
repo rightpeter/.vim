@@ -32,6 +32,10 @@ To install pyls:
 
 	pip install python-language-server
 
+I like to use [yapf](https://github.com/google/yapf#installation) as the formatter:
+
+	$ pip install yapf
+
 ## [Installing Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
 If you're using Neovim, check [Installing Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim) for install instruction.
