@@ -68,7 +68,8 @@ Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 
 " UI
-Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline'
+Plug 'ap/vim-buftabline'
 Plug 'lifepillar/vim-solarized8'
 
 " Smart Fold
@@ -81,16 +82,16 @@ Plug 'tmhedberg/SimpylFold'
 Plug 'w0rp/ale'
 
 " Completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Python
-Plug 'zchee/deoplete-jedi'
+"Plug 'zchee/deoplete-jedi'
 Plug 'davidhalter/jedi'
 
 " Golang
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '$XDG_CONFIG_HOME/nvim/plugged/gocode/nvim/symlink.sh' }
-Plug 'zchee/deoplete-go', { 'do': 'make'}
+"Plug 'zchee/deoplete-go', { 'do': 'make'}
 
 " frontend
 " Plugin 'pangloss/vim-javascript'
@@ -130,10 +131,10 @@ nnoremap <M-]> :bn<CR>			" Open next buffer
 
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR> 	" Change current directory
 
-nnoremap <C-J> <C-W><C-J>		" Focus the buffer below
-nnoremap <C-K> <C-W><C-K>		" Focus the buffer above
-nnoremap <C-L> <C-W><C-L>		" Focus the right buffer
-nnoremap <C-H> <C-W><C-H>		" Focus the left buffer
+nnoremap <M-j> <C-W><C-J>		" Focus the buffer below
+nnoremap <M-k> <C-W><C-K>		" Focus the buffer above
+nnoremap <M-l> <C-W><C-L>		" Focus the right buffer
+nnoremap <M-h> <C-W><C-H>		" Focus the left buffer
 
 " resize current buffer by +/- 5=
 nnoremap <M-left> :2winc <<CR>		" Reduce buffer width
@@ -150,13 +151,13 @@ let g:multi_cursor_prev_key            = '<C-k>'
 let g:multi_cursor_exit_from_insert_mode = 0
 
 " Disable deoplete when in multi cursor mode
-function! Multiple_cursors_before()
-    let b:deoplete_disable_auto_complete = 1
-endfunction
+"function! Multiple_cursors_before()
+    "let b:deoplete_disable_auto_complete = 1
+"endfunction
 
-function! Multiple_cursors_after()
-    let b:deoplete_disable_auto_complete = 0
-endfunction
+"function! Multiple_cursors_after()
+    "let b:deoplete_disable_auto_complete = 0
+"endfunction
 
 " SimplyFold
 nnoremap <space> za
@@ -169,7 +170,7 @@ let g:indentLine_char = '|'
 map <M-u> :MundoToggle<CR>
 
 " Deoplete
-let g:deoplete#enable_at_startup = 1
+"let g:deoplete#enable_at_startup = 1
 
 " Neosnippet
 " Enable snipMate compatibility feature.
@@ -192,8 +193,9 @@ let g:ale_sign_warning = '⚠'	" Warning signs.
 " Set linters
 let g:ale_linters = {
 \   'python': ['pyls'],
-\   'go': ['gofmt', 'golint', 'go vet', 'gosimple']
+\   'go': ['golangserver'],
 \}
+" \   'go': ['gofmt', 'golint', 'go vet', 'gosimple']
 
 " Set fixers
 let g:ale_fixers = {
@@ -202,13 +204,13 @@ let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
 \}
 
-"let g:ale_completion_enabled = 1
+let g:ale_completion_enabled = 1
 nmap <leader>d <Plug>(ale_fix)
 nnoremap gd :ALEGoToDefinition<CR>
 nnoremap <leader>v :vs <CR>:ALEGoToDefinition<CR>
 nnoremap <leader>s :sp <CR>ALEGoToDefinitionCR<CR>
 nnoremap <M-r> :ALEFindReferences<CR>
-nnoremap <M-h> :ALEHover<CR>
+nnoremap <M-H> :ALEHover<CR>
 nmap <silent> <leader>k <Plug>(ale_previous_wrap)
 nmap <silent> <leader>j <Plug>(ale_next_wrap)
 
