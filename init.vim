@@ -6,9 +6,7 @@
 set wildmenu
 set ignorecase
 
-" Relative line number
-set number relativenumber
-
+set number
 
 set hidden " 允许在有未保存的修改时切换缓冲区，此时由vim负责保存
 
@@ -148,7 +146,7 @@ nnoremap <M-down> :2winc -<CR>		" Reduce buffer height
 nnoremap <M-f> :NERDTreeToggle<CR> 	" map NERDTreeToggle
 
 " Toggle relative number
-nnoremap <M-n> :set rnu!<CR>
+nnoremap <leader><leader>n :set rnu!<CR>
 
 " vim-multiple-cursors keys remap
 " let g:multi_cursor_start_word_key      = '<C-j>'
@@ -234,6 +232,9 @@ au FileType python nnoremap <leader>r :!python %<CR>
 " html
 " au FileType html setlocal ts=2 sw=2 expandtab
 
+" sh
+au FileType sh setlocal ts=2 sts=2 sw=2
+
 " markdown
 au FileType markdown setlocal ts=2 sts=2 sw=2
 au FileType markdown nnoremap <M-p> :MarkdownPreview<CR>
@@ -252,7 +253,7 @@ augroup NERDTree_autocmds
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 
-" Absolute when not focus
+" Relative number when focus
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
