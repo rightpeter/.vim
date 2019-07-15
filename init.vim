@@ -51,12 +51,10 @@ Plug 'kien/ctrlp.vim'
 
 " File Explorer
 Plug 'scrooloose/nerdtree'
-
 " Comment Tool
 Plug 'scrooloose/nerdcommenter'
 
 " UI
-"Plug 'vim-airline/vim-airline'
 Plug 'ap/vim-buftabline'
 Plug 'lifepillar/vim-solarized8'
 
@@ -74,7 +72,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Python
 "Plug 'zchee/deoplete-jedi'
-Plug 'davidhalter/jedi'
+"Plug 'davidhalter/jedi'
 
 " Golang
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -107,7 +105,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'idbrii/vim-remarkjs'
 
 " PlantUML
-Plug 'scrooloose/vim-slumlord'
 Plug 'aklt/plantuml-syntax'
 Plug 'weirongxu/plantuml-previewer.vim'
 Plug 'tyru/open-browser.vim'
@@ -166,6 +163,10 @@ map <M-u> :MundoToggle<CR>
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
+" Use ALE and also some plugin 'foobar' as completion sources for all code.
+call deoplete#custom#option('sources', {
+\ '_': ['ale', 'neosnippet', 'buffer'],
+\})
 
 " Neosnippet
 " Enable snipMate compatibility feature.
@@ -200,8 +201,9 @@ let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
 \}
 
-let g:ale_completion_enabled = 1
-nmap <leader>d <Plug>(ale_fix)
+" Use Deocomplete by default
+" let g:ale_completion_enabled = 1
+nmap <leader>f <Plug>(ale_fix)
 nnoremap gd :ALEGoToDefinition<CR>
 nnoremap <leader>v :vs <CR>:ALEGoToDefinition<CR>
 nnoremap <leader>s :sp <CR>ALEGoToDefinitionCR<CR>
