@@ -165,7 +165,7 @@ map <M-u> :MundoToggle<CR>
 let g:deoplete#enable_at_startup = 1
 " Use ALE and also some plugin 'foobar' as completion sources for all code.
 call deoplete#custom#option('sources', {
-\ '_': ['ale', 'neosnippet', 'buffer'],
+\ '_': ['neosnippet', 'ale', 'buffer'],
 \})
 
 " Neosnippet
@@ -188,7 +188,7 @@ let g:ale_sign_warning = '⚠'	" Warning signs.
 
 " Set linters
 let g:ale_linters = {
-\   'python': ['pyls'],
+\   'python': ['flake8', 'pyls'],
 \   'go': ['golangserver'],
 \   'java': ['checkstyle'],
 \}
