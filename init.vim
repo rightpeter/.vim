@@ -206,7 +206,7 @@ let g:ale_fixers = {
 nmap <leader>f <Plug>(ale_fix)
 nnoremap gd :ALEGoToDefinition<CR>
 nnoremap <leader>v :vs <CR>:ALEGoToDefinition<CR>
-nnoremap <leader>s :sp <CR>ALEGoToDefinitionCR<CR>
+nnoremap <leader>s :sp <CR>:ALEGoToDefinition<CR>
 nnoremap <M-r> :ALEFindReferences<CR>
 nnoremap <M-H> :ALEHover<CR>
 nmap <silent> <leader>k <Plug>(ale_previous_wrap)
