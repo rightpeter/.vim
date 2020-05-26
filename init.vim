@@ -14,6 +14,9 @@ set clipboard=unnamed " copy to system clipboard
 
 set nowrap " 指定不折行
 
+" indent
+setlocal ts=4 sw=4 expandtab
+
 " Color theme
 set termguicolors
 set background=dark
@@ -65,10 +68,14 @@ Plug 'tmhedberg/SimpylFold'
 " Plug 'vim-signature'
 
 " Asynchronous Lint Engine
-Plug 'w0rp/ale'
+"Plug 'dense-analysis/ale'
+
+" COC
+" Use release branch (Recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Python
 "Plug 'zchee/deoplete-jedi'
@@ -164,53 +171,58 @@ map <M-u> :MundoToggle<CR>
 " Deoplete
 let g:deoplete#enable_at_startup = 1
 " Use ALE and also some plugin 'foobar' as completion sources for all code.
-call deoplete#custom#option('sources', {
-\ '_': ['neosnippet', 'ale', 'buffer'],
-\})
+" call deoplete#custom#option('sources', {
+" \ '_': ['neosnippet', 'ale', 'buffer'],
+" \})
 
 " Neosnippet
 " Enable snipMate compatibility feature.
-let g:neosnippet#disable_runtime_snippets = {
-\   '_' : 1,
-\ }
-let g:neosnippet#snippets_directory='$XDG_DATA_HOME/nvim/plugged/vim-snippets/snippets' 	" Tell Neosnippet about the other snippets
+" let g:neosnippet#disable_runtime_snippets = {
+" \   '_' : 1,
+" \ }
+" let g:neosnippet#snippets_directory='$XDG_DATA_HOME/nvim/plugged/vim-snippets/snippets' 	" Tell Neosnippet about the other snippets
 
 " Neosnippet Plugin key-mappings.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <expr><TAB>  neosnippet#expandable_or_jumpable() ?
-\ "<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" imap <expr><TAB>  neosnippet#expandable_or_jumpable() ?
+" \ "<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " ALE Settings
-let g:ale_sign_error = '⤫' 	" Error signs.
-let g:ale_sign_warning = '⚠'	" Warning signs.
+" let g:ale_sign_error = '⤫' 	" Error signs.
+" let g:ale_sign_warning = '⚠'	" Warning signs.
+" let g:ale_java_javalsp_executable = expand('~/Development/java-language-server/dist/mac/bin/launcher')
+" let g:ale_java_eclipselsp_path = expand('~/Development/eclipse.jdt.ls')
+" let g:ale_java_eclipselsp_workspace_path = expand('~/workplace')
 
 " Set linters
-let g:ale_linters = {
-\   'python': ['flake8', 'pyls'],
-\   'go': ['golangserver'],
-\   'java': ['checkstyle'],
-\}
+" let g:ale_linters = {
+" \   'python': ['flake8', 'pyls'],
+" \   'go': ['golangserver'],
+" \}
+"\   'java': ['checkstyle', 'eclipselsp'],
 "\   'go': ['gofmt', 'golint', 'go vet', 'gosimple']
 
 " Set fixers
-let g:ale_fixers = {
-\   'python': ['yapf'],
-\   'go': ['gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['eslint', 'prettier'],
-\}
+" let g:ale_fixers = {
+" \   'python': ['yapf'],
+" \   'go': ['gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace'],
+" \   'javascript': ['eslint', 'prettier'],
+" \}
+"\   'java': ['remove_trailing_lines', 'trim_whitespace'],
 
 " Use Deocomplete by default
 " let g:ale_completion_enabled = 1
-nmap <leader>f <Plug>(ale_fix)
-nnoremap gd :ALEGoToDefinition<CR>
-nnoremap <leader>v :vs <CR>:ALEGoToDefinition<CR>
-nnoremap <leader>s :sp <CR>:ALEGoToDefinition<CR>
-nnoremap <M-r> :ALEFindReferences<CR>
-nnoremap <M-H> :ALEHover<CR>
-nmap <silent> <leader>k <Plug>(ale_previous_wrap)
-nmap <silent> <leader>j <Plug>(ale_next_wrap)
+" nmap <leader>f <Plug>(ale_fix)
+" nnoremap gd :ALEGoToDefinition<CR>
+" nnoremap <leader>v :vs <CR>:ALEGoToDefinition<CR>
+" nnoremap <leader>s :sp <CR>:ALEGoToDefinition<CR>
+" nnoremap <M-r> :ALEFindReferences<CR>
+" nnoremap <M-H> :ALEHover<CR>
+" nmap <silent> <leader>k <Plug>(ale_previous_wrap)
+" nmap <silent> <leader>j <Plug>(ale_next_wrap)
+
 
 " auto-pairs
 let g:AutoPairsFlyMode = 1
@@ -224,9 +236,100 @@ let g:AutoPairsShortcutToggle = ''
 " au FileType go nnoremap <leader>r :GoRun %<CR>
 " au FileType go set list lcs=tab:\|\ 		" indentLine only support indentation using space, while gofmt using tab
 
+" COC
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+if has('patch8.1.1068')
+  " Use `complete_info` if your (Neo)Vim version supports it.
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Mappings using CoCList:
+" Show all diagnostics.
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 " Python
 au FileType python nnoremap <leader>r :!python %<CR>
+
+" Java
+au FileType java setlocal ts=4 sw=4 expandtab
 
 " javascript
 " au FileType javascript setlocal ts=2 sts=2 sw=2
